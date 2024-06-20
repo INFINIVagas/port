@@ -1,0 +1,13 @@
+Host github.com/INFINIVagas
+    HostName infinivagas
+    User infinivagas
+    IdentitiesOnly yes
+    IdentityFile ~/.ssh/infini
+    IdentityFile ~/.ssh/infini.pub
+    ServerAliveInterval 30
+    ForwardAgent yes
+
+[user]
+
+	user = "infinivagas"
+	email = "infinivagas@icloud.com"
