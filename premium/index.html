@@ -490,7 +490,7 @@ animation: move 25s infinite;
 
     .flex__item--left {
         order: 1;
-        height: 800px;
+        height: 1000px;
 
     }
 
@@ -552,6 +552,20 @@ animation: move 25s infinite;
 
         transform: none;
         animation: none;
+    }
+    table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+
+            }
+
+            /* Optional: Adjust table cells to stack vertically */
+ .top-each {
+        top: 250px;
+        display: block;
+        padding-top: 10px;
+        width: 100%;
     }
 }
             </style>
@@ -811,7 +825,7 @@ animation: move 25s infinite;
                     <table role="presentation" valign="top"
                     border="0" cellspacing="0" cellpadding="0"
                     width="100%"
-                    style="margin-top: 10px;position: fixed;">
+                    style="margin-top: 10px;position: absolute;">
                         <tbody>
                             <tr>
                             
@@ -831,7 +845,7 @@ animation: move 25s infinite;
                                 </a> 
                                 </td>
                     
-                            <!---TITULO E EMPRESA VAGA SECTION-------------------------->
+                           
                                 <td valign="top"> 
                                     <a
                                         href="https://www.linkedin.com/jobs/view/3967941761/?alternateChannel=search&refId=NotAvailable&trackingId=HXNDhRwAS7SV7FBtafYYHg%3D%3D"
@@ -890,8 +904,8 @@ animation: move 25s infinite;
                                         </table>
                                     </a> 
                                 </td>                              
-
-                                <td valign="top"
+ <!---TITULO E EMPRESA VAGA SECTION-------------------------->
+                                <td class="top-each" valign="top"
                                     style="width:48px;padding-right:8px"
                                     width="48"> 
                                     <a
@@ -907,7 +921,7 @@ animation: move 25s infinite;
                                     </a> 
                                 </td> 
 
-                                <td valign="top"
+                                <td class="top-each" valign="top"
                                     style="width:48px;padding-right:8px"
                                     width="48"> 
                                     <a
@@ -923,7 +937,7 @@ animation: move 25s infinite;
                                     </a> 
                                 </td>
 
-                                <td valign="top"
+                                <td class="top-each" valign="top"
                                 style="width:48px;padding-right:8px"
                                 width="48"> <a
                                     href="https://github.com/JoaoVitorDeOliveira"
@@ -936,7 +950,7 @@ animation: move 25s infinite;
                                         width="789" height="789">
                                 </a> </td>                                  
 
-                                <td valign="top"
+                                <td class="top-each" valign="top"
                                 style="width:48px;"
                                 width="48"> 
                                 <button id="myBtn" class="btn">IA</button>
