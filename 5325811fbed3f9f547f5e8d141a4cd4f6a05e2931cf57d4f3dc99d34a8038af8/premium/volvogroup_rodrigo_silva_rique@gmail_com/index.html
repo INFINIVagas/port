@@ -1,0 +1,1058 @@
+
+    <html lang="pt-br">
+
+        <head>
+
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+            <style>
+                /* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 20px;
+    }
+
+    /* The Close Button */
+    .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    }
+
+    .form-control {
+    padding: 10px;
+    overflow-y: scroll;
+    }
+
+.btn {
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    color: #FFF;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 12px;
+    font-size: 20;
+
+  }
+  .btn::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+  /* glow */
+  .btn::before {
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #FF0000, #FF7300, #FFFB00, #48FF00,
+      #00FFD5, #002BFF, #FF00C8, #FF0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 600%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height:  calc(100% + 4px);
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+    opacity: 1;
+  }
+  
+  @keyframes glowing {
+    0% {background-position: 0 0;}
+    50% {background-position: 400% 0;}
+    100% {background-position: 0 0;}
+  }
+  
+  /* hover */
+  .btn:hover::before {
+    opacity: 1;
+  }
+  
+  .btn:active:after {
+    background: transparent;
+  }
+  
+  .btn:active {
+    color: #000;
+    font-weight: bold;
+  }
+             
+.pdf-viewer {
+	width: auto;
+	height: 100%;
+	margin-bottom: 100px;
+
+	overflow: auto;
+	transition: transform 0.3s ease, box-shadow 2.5s ease;
+
+}
+
+canvas {
+	display: block;
+	margin: 0;
+	cursor:zoom-in;
+}
+.pdf-viewer:hover{
+
+	transform: translateY(150px) scale(1.5);
+	animation: addShadow 1.5s ease forwards;
+}
+.pdf-viewer:not(:hover) {
+	animation: removeShadow 2.5s ease forwards;
+}       
+
+@keyframes addShadow {
+	from {
+		box-shadow: 1px 1px 3px 0px #333;
+	}
+	to {
+		box-shadow: 10px 10px 3px 0px #333;
+	}
+}
+@keyframes removeShadow {
+	from {
+		box-shadow: 10px 10px 3px 0px #333;
+	}
+	to {
+		box-shadow: 1px 1px 3px 0px #333;
+	}
+}        
+
+
+
+*, *:before, *:after {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+p {
+color: transparent;
+font-family: "Source Sans Pro", sans-serif;
+font-weight: 200;
+display: grid;
+box-sizing: border-box;
+font-size: 20px;
+text-align: left;
+}
+
+p:after {
+content: attr(data_content);
+color: #faf8f8;
+width: 100%;
+left: 0;
+top:0;
+text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+} 
+
+.p-element {
+position: absolute;
+font-size: 24px;
+color: #333;
+}
+
+@keyframes random-move {
+0% { transform: translate(0, 0); }
+100% { transform: translate(0, 0); }
+}
+.slider__navi {
+position: absolute;
+top: 50%;
+right: 30px;
+height: 700px;
+transform: translateY(-50%);
+-webkit-transform: translateY(-50%);
+-moz-transform: translateY(-50%);
+-ms-transform: translateY(-50%);
+-o-transform: translateY(-50%);
+z-index: 999;
+}
+
+.slider__navi a {
+display: block;
+height: 60px;
+width: 20px;
+margin: 20px 0;
+text-indent: -9999px;
+box-shadow: none;
+border: none;
+background: rgba(0,0,0,0.2);
+}
+
+.slider__navi a.active {
+background: rgba(255,255,255,1);
+}
+
+.slider__warpper{
+position: relative;
+height: 100%;
+width: 100%;
+}
+
+body {
+position: relative;
+font-size: 100%;
+height: max-content;
+font-family: 'Montserrat', sans-serif;
+font-weight: 400;
+min-height: 100vh;
+width: 100%;
+}
+
+.flex__container {
+position: fixed;
+top: 0px;
+left: 0px;
+display: flex;
+display: -webkit-flex;
+display: -moz-flex;
+display: -ms-flex;
+-webkit-flex-flow: row wrap;
+-moz-flex-flow: row wrap;
+-ms-flex-flow: row wrap;
+-o-flex-flow: row wrap;
+flex-flow: row wrap; 
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+-o-justify-content: flex-start;
+justify-content: flex-start;
+height: 100%;
+width: 100%;
+z-index: 1;
+}
+
+.flex__container.flex--active {
+z-index: 2;
+}
+
+.text--sub {
+font-size: 12px;
+letter-spacing: 0.5rem;
+text-transform: uppercase;
+margin-bottom: -390px;
+}
+
+.text--big {
+font-family: 'Poppins', sans-serif;
+font-size: 3.5em;
+font-weight: 700;
+line-height: 70px;
+margin-left: -8px;
+margin-top: 100px;
+position: fixed;
+}
+
+.text--normal {
+font-size: 22px;
+color: rgba(255, 255, 255, 0.8);
+line-height: 1.3em;
+margin-top: 255px;
+position: absolute;
+}
+
+.text__background {
+font-family: 'Poppins', sans-serif;
+position: absolute;
+left: 72px;
+bottom: -60px;
+color: rgba(0,0,0,0.03);
+font-size: 150px;
+font-weight: 700;
+line-height: 1.3em;
+}
+
+.flex__item {
+height: 100%;
+color: #fff;
+transition: transform 0.1s linear;
+}
+
+.flex__item--left {
+display: flex;
+display: -webkit-flex;
+display: -moz-flex;
+display: -ms-flex;
+align-items: center;
+-webkit-align-items: center;
+-moz-align-items: center;
+-ms-align-items: center;
+width: 65%;
+transform-origin: left bottom;
+transition: transform 0.1s linear 0.4s;
+opacity: 0;
+position: relative;
+overflow: hidden;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex__item--right {
+width: 35%;
+transform-origin: right center;
+transition: transform 0.1s linear 0s;
+opacity: 0;
+
+}
+
+.flex--preStart .flex__item--left,
+.flex--preStart .flex__item--right,
+.flex--active .flex__item--left,
+.flex--active .flex__item--right {
+opacity: 1;
+}
+
+/* Piplup */
+
+.flex--piplup .flex__item--left {
+background: #3e9fe6;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex--piplup .flex__item--right {
+background: #d3eaef;
+
+	
+}
+
+/* Pikachu */
+
+.flex--pikachu .flex__item--left {
+background: #f8d41f;
+}
+
+.flex--pikachu .flex__item--right {
+background: #f4ecc5;
+
+}
+
+/* Blaziken */
+
+.flex--blaziken .flex__item--left {
+background: #f64f37;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex--blaziken .flex__item--right {
+background: #ffebcd;
+background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjOWU5ZTllIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=");
+
+}
+
+/* Dialga */
+
+.flex--dialga .flex__item--left {
+background: #476089;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex--dialga .flex__item--right {
+background: #ade8f7;
+}
+
+/* Zekrom */
+
+.flex--zekrom .flex__item--left {
+background: #424242;
+}
+
+.flex--zekrom .flex__item--right {
+background: #a7bcbb;
+}
+
+.flex__content {
+margin-left: 80px;
+width: 45%;
+opacity: 1;
+transform: translate3d(0,0,0);
+transition: transform 0.2s linear 0.2s, opacity 0.1s linear 0.2s;
+}
+
+.pokemon__img {
+position: absolute;
+bottom: 20px;
+right: 15%;
+max-height: 40vw;
+opacity: 1;
+transform: translate3d(0,0,0);
+transition: opacity 0.43s 0.6s, transform 0.4s 0.65s cubic-bezier(0, 0.88, 0.4, 0.93);
+}
+
+.btn_style {
+position: absolute;
+bottom: -520px;
+background-color: white;
+border-radius: 5px;
+border-width: 0;
+margin:600px;
+margin-left: 10px;
+font-weight:400;
+font-size:10px;
+line-height:1.25;
+text-align: center;
+width: 100px;
+color:#666666;
+box-shadow: 1px 1px 3px 0px #333;
+transform: translate3d(0,0,0);
+transition: opacity 0.43s 0.6s, transform 0.4s 0.65s cubic-bezier(0, 0.88, 0.4, 0.93);
+
+}
+
+/* Animate-START point */
+
+.flex__container.animate--start .flex__content {
+transform: translate3d(0,-200%,0);
+opacity: 0;
+}
+
+.flex__container.animate--start .pokemon__img {
+transform: translate3d(-200px,0,0);
+opacity: 0;
+}
+
+.flex__container.animate--start .btn_style {
+transform: translate3d(-200px,0,0);
+opacity: 0;
+}    
+
+/* Animate-END point */
+
+.flex__container.animate--end .flex__item--left {
+transform: scaleY(0);
+}
+
+.flex__container.animate--end .flex__item--right {
+transform: scaleX(0);
+}
+
+.flex__container.animate--end .flex__content {
+transform: translate3d(0,200%,0);
+opacity: 0;
+}
+
+.flex__container.animate--end .pokemon__img {
+transform: translate3d(200px,0,0);
+opacity: 0;
+}
+
+.flex__container.animate--end .btn_style {
+transform: translate3d(200px,0,0);
+opacity: 0;
+}
+
+
+
+.repeat {
+position: absolute;
+
+}
+
+.repeat::before,
+.repeat::after {
+content: attr("text__background");
+
+}
+
+.repeat::before {
+top: 10%;
+left: 10%;
+}
+
+.repeat::after {
+bottom: 10%;
+right: 10%;
+}
+
+@keyframes move {
+0% { transform: translate(-40px, 0px); }
+10% { transform: translate(-20px, 20px); }
+25% { transform: translate(0px, 0px); }
+35% { transform: translate(80px, -20px); }
+50% { transform: translate(150px, 40px); }
+75% { transform: translate(30px, 40px); }
+100% { transform: translate(-40px, 0); }
+}
+
+.repeat, .repeat::before, .repeat::after {
+animation: move 25s infinite;
+}
+
+@media (max-width: 1280px) {
+    body {
+        position: relative;
+        font-size: 100%;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+        width: 100%;
+        margin: 0;
+        overflow-y: scroll;
+    }
+
+    .flex__container {
+        display: flex;
+        flex-direction: column; /* Ensure stacking in column layout */
+        justify-content: flex-start;
+        position: relative;
+        height: auto;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .flex__content {
+        width: 70%;
+
+        }
+
+    .flex__item--left,
+    .flex__item--right {
+        width: 100%;
+    }
+
+    .flex__item--left {
+        order: 1;
+        height: 800px;
+
+    }
+
+    .flex__item--right {
+        order: 2;
+    }
+
+    .pokemon__img {
+        order: 2;
+        position: relative;
+        max-height: none;
+        bottom: 0;
+        right: 0;
+        width: 100%; /* Make it full width */
+        height: auto;
+    }
+
+    .btn_style {
+        position: relative;
+        bottom: 0;
+        margin: 20px auto;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .text--big {
+        font-family: 'Poppins', sans-serif;
+        font-size: 3.5em;
+        font-weight: 700;
+        line-height: 60px;
+        margin-left: -8px;
+        margin-top: 100px;
+        position: absolute;
+    }
+
+    .text--normal {
+        font-size: 22px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.3em;
+        margin-top: 275px;
+        position: absolute;
+    }
+
+    .pdf-viewer {
+	width: 100%;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjOWU5ZTllIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=");
+
+    }
+
+    canvas {
+        display: block;
+        margin: 0;
+        cursor:default;
+        width: 100%;
+        padding:5%;
+    }
+    .pdf-viewer:hover{
+
+        transform: none;
+        animation: none;
+    }
+}
+            </style>
+            <script>
+                
+  function DisplayPDF() {
+      'use strict';
+      var url = null;
+
+      var init = function(args) {
+      url = args.url || null;
+      display()
+      };
+      
+      var display = function() {
+              var pdfjsLib = window['pdfjs-dist/build/pdf'];
+              pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+
+
+              console.log("url values is ", url)
+              var loadingTask = pdfjsLib.getDocument(url);
+              loadingTask.promise.then(function(pdf) {
+                  console.log('PDF loaded');
+                  
+                  var pdfViewer = document.getElementById(url);
+                  if (!pdfViewer.hasChildNodes()){
+                      console.log("Viewer aqui: ", pdfViewer)
+                      
+                      for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                          pdf.getPage(pageNum).then(function(page) {
+                              var viewport = page.getViewport({scale: 0.8});
+                              var canvas = document.createElement('canvas');
+                              var context = canvas.getContext('2d');
+                              canvas.height = viewport.height;
+                              canvas.width = viewport.width;
+
+                              pdfViewer.appendChild(canvas);
+
+                              var renderContext = {
+                                  canvasContext: context,
+                                  viewport: viewport
+                              };
+                              page.render(renderContext);
+                          });
+                      }
+                  }
+              }, function(reason) {
+                  console.error(reason);
+              
+          })
+      }
+  
+      return {
+      init: init
+      }
+  };
+  
+  function DisplayBytePDF() {
+    'use strict';
+    var url = null;
+    var pdf_bytes = null;
+
+    var init = function(args) {
+    url = args.url || null;
+    pdf_bytes = args.bytes || null;
+    display(pdf_bytes)
+    };
+    
+    var display = function(pdf_bytes) {
+        // Example byte array (in reality, this would be your PDF byte data)
+        var pdfBytes = new Uint8Array([
+            pdf_bytes
+        ]);
+
+        // Load the PDF.js library and render the PDF
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+
+        // Create a PDF document from the byte array
+        var loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+            loadingTask.promise.then(function(pdf) {
+                console.log('PDF loaded');
+                
+                var pdfViewer = document.getElementById(url);
+                if (!pdfViewer.hasChildNodes()){
+                    console.log("Viewer aqui: ", pdfViewer)
+                    
+                    for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        pdf.getPage(pageNum).then(function(page) {
+                            var viewport = page.getViewport({scale: 0.8});
+                            var canvas = document.createElement('canvas');
+                            var context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            pdfViewer.appendChild(canvas);
+
+                            var renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            page.render(renderContext);
+                        });
+                    }
+                }
+            }, function(reason) {
+                console.error(reason);
+            
+        })
+    }
+
+    return {
+    init: init
+    }
+};   
+
+    function IAPopUP() {
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+        modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+    }
+
+  function Typewrite() {
+      'use strict';
+      var el = null;
+      var di = null;
+      var ur = null;
+      var text = "";
+      var tempText = "";
+      var interval;
+      var range = [1];
+      
+      var init = function(args) {
+      di = args.di || null;
+      el = args.el || null;
+      text = di.innerHTML || "";
+      range.push(text.length)
+      interval = setInterval(animate, 1000)
+      };
+      
+      var setTempText = function() {
+      tempText = text.substring(0, range[0]);
+      if (tempText.length % 2 == 0)
+          tempText += "_";
+      el.setAttribute('data_content', tempText)
+      if ( range[0] < range[1]) {
+          range[0]++;
+          return true;      
+      }
+      return false;
+      };
+      
+      
+      var animate = function() {
+      // do things
+      setTempText();
+      clearInterval(interval)
+      if (text != tempText) {
+          var counter = Math.random * 35;
+          interval = setInterval(animate, counter)
+      } else {
+          el.setAttribute('data_content', text)
+          console.log('done', interval)
+      }
+      }
+      
+      return {
+      init: init
+      }
+  }  
+
+
+  $(document).ready(function() {
+    $('.slide-nav').on('click', function(e) {
+        e.preventDefault();
+        // get current slide
+        var current = $('.flex--active').data('slide'),
+        // get button data-slide
+        next = $(this).data('slide');
+    
+        $('.slide-nav').removeClass('active');
+        $(this).addClass('active');
+    
+        if (current === next) {
+            return false;
+        } else {
+            $('.slider__warpper').find('.flex__container[data-slide=' + next + ']').addClass('flex--preStart');
+            $('.flex--active').addClass('animate--end');
+            setTimeout(function() {
+                $('.flex--preStart').removeClass('animate--start flex--preStart').addClass('flex--active');
+                $('.animate--end').addClass('animate--start').removeClass('animate--end flex--active');
+            }, 800);
+        }
+    });
+});
+            </script>
+        </head>
+        <body>
+            <div class="slider__warpper">
+                
+                <div class="flex__container flex--dialga flex--active" data-slide="1">
+                
+                <div class="flex__item flex__item--left">
+                    <div class="flex__content">
+                    <p class="text--sub"></p>
+                    <h1 class="text--big">Rodrigo Rique</h1>
+                    <p id="tempTextDiv1" style="display: none;" class="text--normal"> Como Rodrigo Rique, entusiasta pela tecnologia e desenvolvimento de software, estou ansioso para contribuir com meus conhecimentos e habilidades para o Volvo Group. Com experiência em plataforma .NET e integração de tecnologias, sinto-me bem preparado para desempenhar a função de Senior Software Engineer e ajudar a impulsionar os projetos da empresa.
+</p>
+                    <p id="typewrite1" data_content="" class="text--normal"></p>
+    
+                    <script>   
+
+                        var t = new Typewrite();
+                        t.init({
+                            di: document.getElementById("tempTextDiv1"),
+                            el: document.getElementById("typewrite1"),
+                            
+                        });
+
+                        var p = new DisplayPDF();
+                        p.init({
+                            url: "rodrigo.silva.rique@gmail.com.pdf"
+                        })
+
+                    </script>
+
+                    <table role="presentation" valign="top"
+                    border="0" cellspacing="0" cellpadding="0"
+                    width="100%"
+                    style="margin-top: 10px;position: fixed;">
+                        <tbody>
+                            <tr>
+                                <td valign="top"> 
+                                    <a
+                                        href="https://br.linkedin.com/jobs/view/senior-software-engineer-at-volvo-group-3978460768?position=15&pageNum=0&refId=Tpeiv4KsOPWYdf0qeQU7gQ%3D%3D&trackingId=DqlrtRPknV1QSUcAO6aiyA%3D%3D&trk=public_jobs_jserp-result_search-card"
+                                        style="color:#0a66c2;display:inline-block;text-decoration:none;padding-right: 30px;"
+                                        target="_blank"
+                                        >
+                                        
+                                        <table role="presentation"
+                                            valign="top" border="0"
+                                            cellspacing="0"
+                                            cellpadding="0"
+                                            width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top"
+                                                    style="width:48px;padding-right:8px"
+                                                    width="48"> <a
+                                                        href="https://br.linkedin.com/jobs/view/senior-software-engineer-at-volvo-group-3978460768?position=15&pageNum=0&refId=Tpeiv4KsOPWYdf0qeQU7gQ%3D%3D&trackingId=DqlrtRPknV1QSUcAO6aiyA%3D%3D&trk=public_jobs_jserp-result_search-card"
+                                                        style="color:#0a66c2;display:inline-block;text-decoration:none"
+                                                        target="_blank"
+                                                        >
+                                                        <img src="https://media.licdn.com/dms/image/C4D0BAQF6VxeKGI-lyg/company-logo_200_200/0/1632477690193/volvo_group_logo?e=2147483647&amp;v=beta&amp;t=caqKWIWOAJbml0ctlkwdSVsIVkX1GFVkzqMPrzaEsHE"
+                                                            style="outline:none;text-decoration:none;display:inline-block;height:68px;width:68px;background-color:#eae6df;"
+                                                            width="789" height="789">
+                                                    </a> 
+                                                    </td>
+                                                    <td
+                                                        style="padding-bottom:0px">
+                                                        <a href="https://br.linkedin.com/jobs/view/senior-software-engineer-at-volvo-group-3978460768?position=15&pageNum=0&refId=Tpeiv4KsOPWYdf0qeQU7gQ%3D%3D&trackingId=DqlrtRPknV1QSUcAO6aiyA%3D%3D&trk=public_jobs_jserp-result_search-card"
+                                                            style="color:#ffffff;display:inline-block;text-decoration:none;font-size:16px;font-weight:200;line-height:1.25"
+                                                            target="_blank"
+                                                            >
+                                                            Senior Software Engineer
+                                                        </a> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding-bottom:0px">
+                                                        <p
+                                                            style="margin:0;font-weight:400;margin-top:4px;text-overflow:ellipsis;font-size:12px;line-height:1.25;color:#ffffff;overflow:hidden;display:-webkit-box">
+                                                            Curitiba
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                                                                      
+                                                <tr>
+                                                    <td>
+                                                        <table
+                                                            role="presentation"
+                                                            valign="top"
+                                                            border="0"
+                                                            cellspacing="0"
+                                                            cellpadding="0"
+                                                            width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="font-size:0"
+                                                                        align="left">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </a> 
+                                </td>
+                            
+                                <!--LOGO DAS VAGAS SECTION-->
+                                
+        <td valign="top"
+            style="width:48px;padding-right:8px"
+            width="48"> 
+            <a
+                href="mailto:rodrigo.silva.rique@gmail.com?subject=Me%20Apresentando!&body=Aqui%20está%20a%20mensagem%20de%20introdução-
+
+```
+Introdução-%20Como%20Rodrigo%20Rique,%20entusiasta%20pela%20tecnologia%20e%20desenvolvimento%20de%20software,%20estou%20ansioso%20para%20contribuir%20com%20meus%20conhecimentos%20e%20habilidades%20para%20o%20Volvo%20Group.%20Com%20experiência%20em%20plataforma%20.NET%20e%20integração%20de%20tecnologias,%20sinto-me%20bem%20preparado%20para%20desempenhar%20a%20função%20de%20Senior%20Software%20Engineer%20e%20ajudar%20a%20impulsionar%20os%20projetos%20da%20empresa.
+```
+
+Essa%20introdução%20destaca%20minha%20entusiase%20pela%20tecnologia%20e%20desenvolvimento%20de%20software,%20além%20de%20mencionar%20minhas%20experiências%20e%20habilidades%20relevantes%20para%20o%20cargo%20de%20Senior%20Software%20Engineer%20na%20Volvo%20Group.%20Além%20disso,%20sinto%20que%20posso%20contribuir%20positivamente%20para%20a%20empresa%20com%20meus%20conhecimentos%20em%20plataforma%20.NET%20e%20integração%20de%20tecnologias.%0D%0A%0D%0AAqui%20está%20meu%20Portfólio:%20%0D%0A%0D%0Ahttps://portfolio.infinivagas.com/5325811fbed3f9f547f5e8d141a4cd4f6a05e2931cf57d4f3dc99d34a8038af8/premium/volvogroup_rodrigo_silva_rique@gmail_com%0D%0A%0D%0AQualquer%20dúvida%20estou%20à%20disposição!%0D%0A%0D%0ARodrigo%20Rique"
+                style="color:#0a66c2;display:inline-block;text-decoration:none"
+                target=""
+                rel="noreferrer noopener"
+                >
+                <img src="https://static-00.iconduck.com/assets.00/email-icon-2048x2048-iejnvv9u.png"
+                    alt="person"
+                    style="outline:none;text-decoration:none;display:inline-block;height:48px;width:48px;border-radius:18px;"
+                    width="789" height="789">
+            </a> 
+        </td>
+        
+        <td valign="top"
+            style="width:48px;padding-right:8px"
+            width="48"> 
+            <a
+                href="https://www.linkedin.com/in/rodrigorique/"
+                style="color:#0a66c2;display:inline-block;text-decoration:none"
+                target="_blank"
+                rel="noreferrer noopener"
+                >
+                <img src="https://images.crunchbase.com/image/upload/c_pad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/rdp6fcqdcvqqcqn3jz72"
+                    alt="person"
+                    style="outline:none;text-decoration:none;display:inline-block;height:48px;width:48px;border-radius:18px;"
+                    width="789" height="789">
+            </a> 
+        </td>
+        
+
+                                <td valign="top"
+                                style="width:48px;"
+                                width="48"> 
+                                    <button id="myBtn" class="btn">IA</button>
+                                </td> 
+                                <td>
+                                    <table
+                                        role="presentation"
+                                        valign="top"
+                                        border="0"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size:0"
+                                                    align="left">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                    <p class="text__background repeat">Rodrigo Rique</p>
+                </div>
+                
+                <div class="flex__item flex__item--right">
+                    <div
+                        style="padding: 5px;cursor: pointer;"
+                        class=" btn_style ">
+                            <a href="rodrigo.silva.rique@gmail.com.pdf"
+                            style="font-size: 14px;margin:0;font-weight:400;font-family:-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue','Fira Sans',Ubuntu,Oxygen,'Oxygen Sans',Cantarell,'Droid Sans','Apple Color Emoji','Segoe UI Emoji','Segoe UI Emoji','Segoe UI Symbol','Lucida Grande',Helvetica,Arial,sans-serif;line-height:1.25;color:#666666">
+                            Download CV
+                        </a>
+                    </div>                               
+                </div>
+
+                <div id="rodrigo.silva.rique@gmail.com.pdf" class="pokemon__img pdf-viewer"></div>
+                
+                <div id="myModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="form-control">
+                        <span class="username-label">Score:</span>
+                        <p style="color: black;">3</p>
+                    </div>
+                      
+                    <div class="form-control">
+                        <span class="username-label">Avaliação da IA:</span>
+                        <p style="color: black;">Após a análise da descrição da vaga e do currículo do candidato, é possível concluir que o candidato tem uma boa adequação para a posição de Senior Software Engineer.
+
+A candidatura destaca a experiência em plataforma .NET, especialmente no que diz respeito a sistemas backend, o que é mencionado na descrição da vaga como um requisito importante. Além disso, o currículo do candidato também destaca conhecimentos em integração de tecnologias e princípios, banco de dados relacionais (MS SQL Servers), Azure DevOps e GIT.
+
+A descrição da vaga menciona a necessidade de conforto com ambientes ágeis e design e problem-solving skills. O currículo do candidato não explicitamente destaca essas habilidades, mas é possível inferir que o candidato tem experiência em desenvolvimento de software e pode adaptar-se a novos tecnologias.
+
+Em resumo, o candidato apresenta uma boa adequação para a posição de Senior Software Engineer, com experiência relevante na plataforma .NET e conhecimentos em integração de tecnologias e princípios.</p>
+                    </div>
+                    <div class="form-control">
+                        <span class="username-label">Sobre a Vaga:</span>
+                        <div style="display: block;scroll-behavior: auto;">
+                            <p style="color: black;">
+                                Transport is at the core of modern society. Imagine using your expertise to shape sustainable transport solutions for the future? If you seek to make a difference on a global scale, working with next-gen technologies and the sharpest collaborative teams, then we could be a perfect match.&lt;br&gt;&lt;br&gt;&lt;strong&gt;What You Will Do&lt;br&gt;&lt;br&gt;&lt;/strong&gt;At Volvo Group Digital &amp;amp; IT, we have a clear ambition to enable value creation at scale for the Volvo Group. With a new product centric operating model and digital technologies, we will produce digital offerings that are profitable, scalable, and differentiated. With Volvo Group Digital &amp;amp; IT, you will be part of a global and diverse team of highly skilled professionals, who learn continuously and embrace change to stay ahead. We have a very significant role in reaching the Volvo Group's ambitions for 2030. Do you want to be part of our transformation journey towards becoming the digital capability of the Group? The time is now.&lt;br&gt;&lt;br&gt;&lt;strong&gt;This will be us - your colleagues within Digital Delivery &lt;br&gt;&lt;br&gt;&lt;/strong&gt;Digital Delivery is a new function within Volvo Group Digital &amp;amp; IT. It has the ambition to identify and execute on new digital initiatives in tight collaboration with TD/BAs and Group Functions as well as modernize and transform our existing solutions into products and to secure agile ways of working across the whole Digital Delivery function.&lt;br&gt;&lt;br&gt;Together with our digital talents, we will work on solution design and deliveries to improve business performance and create value at scale for Volvo Group. Included in our mission is to drive an efficient Volvo Group Digital &amp;amp; IT interface and Portfolio Management for the TD/BAs and Group Functions.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Who are you?&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt; Comfortable working in agile environments&lt;/li&gt;&lt;li&gt; Your transparent, committed, and reliable nature builds trust among colleagues and customers.&lt;/li&gt;&lt;li&gt; You have a strong desire to learn and adapt to new technologies.&lt;/li&gt;&lt;li&gt; Resilient and adaptable, you thrive in a changing world.&lt;/li&gt;&lt;li&gt; Possess excellent design and problem-solving skills.&lt;/li&gt;&lt;li&gt; Proficiency in English is a requirement.&lt;/li&gt;&lt;li&gt; Exceptional soft skills, with the ability to mentor team members, effectively communicate with Product Owners, and collaborate with other stakeholders.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Your Experiences&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Experience with the .NET platform, especially concerning backend systems.&lt;/li&gt;&lt;li&gt;Understanding of integration technologies and principles (message queuing, REST API, etc)&lt;/li&gt;&lt;li&gt;Knowledge and experience in relational databases (MS SQL servers)&lt;/li&gt;&lt;li&gt;Experience in Azure DevOps and GIT repositories&lt;/li&gt;&lt;li&gt;Knowledge of Unit/integration testing and TDD &lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Nice to have&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Knowledge of front-end development languages including Angular, React, or another modern JavaScript framework &lt;/li&gt;&lt;li&gt;Knowledge of how to work with S.O.L.I.D principles &lt;/li&gt;&lt;li&gt;Knowledge of security and vulnerabilities&lt;/li&gt;&lt;li&gt;Experience with development in Microsoft Azure or other cloud solutions like AWS &lt;/li&gt;&lt;li&gt;Knowledge of Mongo DB, GRPC, node and python&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;What’s in it for you?&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt; Emphasis on work-life balance for personal and professional development &lt;/li&gt;&lt;li&gt; Immersive experience in an agile and international DevSecOps environment &lt;/li&gt;&lt;li&gt; Potential to work globally or cross-functionally &lt;/li&gt;&lt;li&gt; Close collaboration with Volvo Trucks Aftermarket IT and business teams &lt;/li&gt;&lt;li&gt; Attractive work environment fostering collaboration on business-critical solutions &lt;/li&gt;&lt;li&gt; Friendly atmosphere with highly skilled colleagues &lt;/li&gt;&lt;li&gt; Strong and experienced team driven by teamwork and mutual improvement &lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Ready for the next move?&lt;br&gt;&lt;br&gt;&lt;/strong&gt;If you are curious to explore how we put our words into actions, follow us on LinkedIn and volvogroup.com.&lt;br&gt;&lt;br&gt;We value your data privacy and therefore do not accept applications via mail.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Who We Are And What We Believe In&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Our focus on Inclusion, Diversity, and Equity allows each of us the opportunity to bring our full authentic self to work and thrive by providing a safe and supportive environment, free of harassment and discrimination. We are committed to removing the barriers to entry, which is why we ask that even if you feel you may not meet every qualification on the job description, please apply and let us decide.&lt;br&gt;&lt;br&gt;Applying to this job offers you the opportunity to join &lt;strong&gt;Volvo Group&lt;/strong&gt;. Every day, across the globe, our trucks, buses, engines, construction equipment, financial services, and solutions make modern life possible. We are almost 100,000 people empowered to shape the future landscape of efficient, safe and sustainable transport solutions. Fulfilling our mission creates countless career opportunities for talents with sharp minds and passion across the group’s leading brands and entities.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Group Digital &amp;amp; IT&lt;/strong&gt; is the hub for digital development within Volvo Group. Imagine yourself working with cutting-edge technologies in a global team, represented in more than 30 countries. We are dedicated to leading the way of tomorrow’s transport solutions, guided by a strong customer mindset and high level of curiosity, both as individuals and as a team. Here, you will thrive in your career in an environment where your voice is heard and your ideas matter.
+                            
+                            </p>
+                        </div
+                    </div>
+                    <a href="https://infinivagas.com" style="font-size: 10px;">Powered by INFINIVAGAS</a>
+                    </div>
+                </div>
+                <script>IAPopUP()</script>
+
+            </div>
+        
+        
+            </div>
+
+            <div class="slider__navi">
+                
+            </div>    
+
+        </body>
+    </html>
+    
