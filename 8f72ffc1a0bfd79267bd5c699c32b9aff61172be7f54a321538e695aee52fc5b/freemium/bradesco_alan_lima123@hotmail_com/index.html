@@ -1,0 +1,1058 @@
+
+    <html lang="pt-br">
+
+        <head>
+
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+            <style>
+                /* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 20px;
+    }
+
+    /* The Close Button */
+    .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    }
+
+    .form-control {
+    padding: 10px;
+    overflow-y: scroll;
+    }
+
+.btn {
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    color: #FFF;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 12px;
+    font-size: 20;
+
+  }
+  .btn::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+  /* glow */
+  .btn::before {
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #FF0000, #FF7300, #FFFB00, #48FF00,
+      #00FFD5, #002BFF, #FF00C8, #FF0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 600%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height:  calc(100% + 4px);
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+    opacity: 1;
+  }
+  
+  @keyframes glowing {
+    0% {background-position: 0 0;}
+    50% {background-position: 400% 0;}
+    100% {background-position: 0 0;}
+  }
+  
+  /* hover */
+  .btn:hover::before {
+    opacity: 1;
+  }
+  
+  .btn:active:after {
+    background: transparent;
+  }
+  
+  .btn:active {
+    color: #000;
+    font-weight: bold;
+  }
+             
+.pdf-viewer {
+	width: auto;
+	height: 100%;
+	margin-bottom: 100px;
+
+	overflow: auto;
+	transition: transform 0.3s ease, box-shadow 2.5s ease;
+
+}
+
+canvas {
+	display: block;
+	margin: 0;
+	cursor:zoom-in;
+}
+.pdf-viewer:hover{
+
+	transform: translateY(150px) scale(1.5);
+	animation: addShadow 1.5s ease forwards;
+}
+.pdf-viewer:not(:hover) {
+	animation: removeShadow 2.5s ease forwards;
+}       
+
+@keyframes addShadow {
+	from {
+		box-shadow: 1px 1px 3px 0px #333;
+	}
+	to {
+		box-shadow: 10px 10px 3px 0px #333;
+	}
+}
+@keyframes removeShadow {
+	from {
+		box-shadow: 10px 10px 3px 0px #333;
+	}
+	to {
+		box-shadow: 1px 1px 3px 0px #333;
+	}
+}        
+
+
+
+*, *:before, *:after {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+p {
+color: transparent;
+font-family: "Source Sans Pro", sans-serif;
+font-weight: 200;
+display: grid;
+box-sizing: border-box;
+font-size: 20px;
+text-align: left;
+}
+
+p:after {
+content: attr(data_content);
+color: #faf8f8;
+width: 100%;
+left: 0;
+top:0;
+text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+} 
+
+.p-element {
+position: absolute;
+font-size: 24px;
+color: #333;
+}
+
+@keyframes random-move {
+0% { transform: translate(0, 0); }
+100% { transform: translate(0, 0); }
+}
+.slider__navi {
+position: absolute;
+top: 50%;
+right: 30px;
+height: 700px;
+transform: translateY(-50%);
+-webkit-transform: translateY(-50%);
+-moz-transform: translateY(-50%);
+-ms-transform: translateY(-50%);
+-o-transform: translateY(-50%);
+z-index: 999;
+}
+
+.slider__navi a {
+display: block;
+height: 60px;
+width: 20px;
+margin: 20px 0;
+text-indent: -9999px;
+box-shadow: none;
+border: none;
+background: rgba(0,0,0,0.2);
+}
+
+.slider__navi a.active {
+background: rgba(255,255,255,1);
+}
+
+.slider__warpper{
+position: relative;
+height: 100%;
+width: 100%;
+}
+
+body {
+position: relative;
+font-size: 100%;
+height: max-content;
+font-family: 'Montserrat', sans-serif;
+font-weight: 400;
+min-height: 100vh;
+width: 100%;
+}
+
+.flex__container {
+position: fixed;
+top: 0px;
+left: 0px;
+display: flex;
+display: -webkit-flex;
+display: -moz-flex;
+display: -ms-flex;
+-webkit-flex-flow: row wrap;
+-moz-flex-flow: row wrap;
+-ms-flex-flow: row wrap;
+-o-flex-flow: row wrap;
+flex-flow: row wrap; 
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+-o-justify-content: flex-start;
+justify-content: flex-start;
+height: 100%;
+width: 100%;
+z-index: 1;
+}
+
+.flex__container.flex--active {
+z-index: 2;
+}
+
+.text--sub {
+font-size: 12px;
+letter-spacing: 0.5rem;
+text-transform: uppercase;
+margin-bottom: -390px;
+}
+
+.text--big {
+font-family: 'Poppins', sans-serif;
+font-size: 3.5em;
+font-weight: 700;
+line-height: 70px;
+margin-left: -8px;
+margin-top: 100px;
+position: fixed;
+}
+
+.text--normal {
+font-size: 22px;
+color: rgba(255, 255, 255, 0.8);
+line-height: 1.3em;
+margin-top: 255px;
+position: absolute;
+}
+
+.text__background {
+font-family: 'Poppins', sans-serif;
+position: absolute;
+left: 72px;
+bottom: -60px;
+color: rgba(0,0,0,0.03);
+font-size: 150px;
+font-weight: 700;
+line-height: 1.3em;
+}
+
+.flex__item {
+height: 100%;
+color: #fff;
+transition: transform 0.1s linear;
+}
+
+.flex__item--left {
+display: flex;
+display: -webkit-flex;
+display: -moz-flex;
+display: -ms-flex;
+align-items: center;
+-webkit-align-items: center;
+-moz-align-items: center;
+-ms-align-items: center;
+width: 65%;
+transform-origin: left bottom;
+transition: transform 0.1s linear 0.4s;
+opacity: 0;
+position: relative;
+overflow: hidden;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex__item--right {
+width: 35%;
+transform-origin: right center;
+transition: transform 0.1s linear 0s;
+opacity: 0;
+
+}
+
+.flex--preStart .flex__item--left,
+.flex--preStart .flex__item--right,
+.flex--active .flex__item--left,
+.flex--active .flex__item--right {
+opacity: 1;
+}
+
+/* Piplup */
+
+.flex--piplup .flex__item--left {
+background: #3e9fe6;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex--piplup .flex__item--right {
+background: #d3eaef;
+
+	
+}
+
+/* Pikachu */
+
+.flex--pikachu .flex__item--left {
+background: #f8d41f;
+}
+
+.flex--pikachu .flex__item--right {
+background: #f4ecc5;
+
+}
+
+/* Blaziken */
+
+.flex--blaziken .flex__item--left {
+background: #f64f37;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex--blaziken .flex__item--right {
+background: #ffebcd;
+background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjOWU5ZTllIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=");
+
+}
+
+/* Dialga */
+
+.flex--dialga .flex__item--left {
+background: #476089;
+box-shadow: 7px 5px 3px black;
+}
+
+.flex--dialga .flex__item--right {
+background: #ade8f7;
+}
+
+/* Zekrom */
+
+.flex--zekrom .flex__item--left {
+background: #424242;
+}
+
+.flex--zekrom .flex__item--right {
+background: #a7bcbb;
+}
+
+.flex__content {
+margin-left: 80px;
+width: 45%;
+opacity: 1;
+transform: translate3d(0,0,0);
+transition: transform 0.2s linear 0.2s, opacity 0.1s linear 0.2s;
+}
+
+.pokemon__img {
+position: absolute;
+bottom: 20px;
+right: 15%;
+max-height: 40vw;
+opacity: 1;
+transform: translate3d(0,0,0);
+transition: opacity 0.43s 0.6s, transform 0.4s 0.65s cubic-bezier(0, 0.88, 0.4, 0.93);
+}
+
+.btn_style {
+position: absolute;
+bottom: -520px;
+background-color: white;
+border-radius: 5px;
+border-width: 0;
+margin:600px;
+margin-left: 10px;
+font-weight:400;
+font-size:10px;
+line-height:1.25;
+text-align: center;
+width: 100px;
+color:#666666;
+box-shadow: 1px 1px 3px 0px #333;
+transform: translate3d(0,0,0);
+transition: opacity 0.43s 0.6s, transform 0.4s 0.65s cubic-bezier(0, 0.88, 0.4, 0.93);
+
+}
+
+/* Animate-START point */
+
+.flex__container.animate--start .flex__content {
+transform: translate3d(0,-200%,0);
+opacity: 0;
+}
+
+.flex__container.animate--start .pokemon__img {
+transform: translate3d(-200px,0,0);
+opacity: 0;
+}
+
+.flex__container.animate--start .btn_style {
+transform: translate3d(-200px,0,0);
+opacity: 0;
+}    
+
+/* Animate-END point */
+
+.flex__container.animate--end .flex__item--left {
+transform: scaleY(0);
+}
+
+.flex__container.animate--end .flex__item--right {
+transform: scaleX(0);
+}
+
+.flex__container.animate--end .flex__content {
+transform: translate3d(0,200%,0);
+opacity: 0;
+}
+
+.flex__container.animate--end .pokemon__img {
+transform: translate3d(200px,0,0);
+opacity: 0;
+}
+
+.flex__container.animate--end .btn_style {
+transform: translate3d(200px,0,0);
+opacity: 0;
+}
+
+
+
+.repeat {
+position: absolute;
+
+}
+
+.repeat::before,
+.repeat::after {
+content: attr("text__background");
+
+}
+
+.repeat::before {
+top: 10%;
+left: 10%;
+}
+
+.repeat::after {
+bottom: 10%;
+right: 10%;
+}
+
+@keyframes move {
+0% { transform: translate(-40px, 0px); }
+10% { transform: translate(-20px, 20px); }
+25% { transform: translate(0px, 0px); }
+35% { transform: translate(80px, -20px); }
+50% { transform: translate(150px, 40px); }
+75% { transform: translate(30px, 40px); }
+100% { transform: translate(-40px, 0); }
+}
+
+.repeat, .repeat::before, .repeat::after {
+animation: move 25s infinite;
+}
+
+@media (max-width: 1280px) {
+    body {
+        position: relative;
+        font-size: 100%;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+        width: 100%;
+        margin: 0;
+        overflow-y: scroll;
+    }
+
+    .flex__container {
+        display: flex;
+        flex-direction: column; /* Ensure stacking in column layout */
+        justify-content: flex-start;
+        position: relative;
+        height: auto;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .flex__content {
+        width: 70%;
+
+        }
+
+    .flex__item--left,
+    .flex__item--right {
+        width: 100%;
+    }
+
+    .flex__item--left {
+        order: 1;
+        height: 800px;
+
+    }
+
+    .flex__item--right {
+        order: 2;
+    }
+
+    .pokemon__img {
+        order: 2;
+        position: relative;
+        max-height: none;
+        bottom: 0;
+        right: 0;
+        width: 100%; /* Make it full width */
+        height: auto;
+    }
+
+    .btn_style {
+        position: relative;
+        bottom: 0;
+        margin: 20px auto;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .text--big {
+        font-family: 'Poppins', sans-serif;
+        font-size: 3.5em;
+        font-weight: 700;
+        line-height: 60px;
+        margin-left: -8px;
+        margin-top: 100px;
+        position: absolute;
+    }
+
+    .text--normal {
+        font-size: 22px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.3em;
+        margin-top: 275px;
+        position: absolute;
+    }
+
+    .pdf-viewer {
+	width: 100%;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjOWU5ZTllIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=");
+
+    }
+
+    canvas {
+        display: block;
+        margin: 0;
+        cursor:default;
+        width: 100%;
+        padding:5%;
+    }
+    .pdf-viewer:hover{
+
+        transform: none;
+        animation: none;
+    }
+}
+            </style>
+            <script>
+                
+  function DisplayPDF() {
+      'use strict';
+      var url = null;
+
+      var init = function(args) {
+      url = args.url || null;
+      display()
+      };
+      
+      var display = function() {
+              var pdfjsLib = window['pdfjs-dist/build/pdf'];
+              pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+
+
+              console.log("url values is ", url)
+              var loadingTask = pdfjsLib.getDocument(url);
+              loadingTask.promise.then(function(pdf) {
+                  console.log('PDF loaded');
+                  
+                  var pdfViewer = document.getElementById(url);
+                  if (!pdfViewer.hasChildNodes()){
+                      console.log("Viewer aqui: ", pdfViewer)
+                      
+                      for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                          pdf.getPage(pageNum).then(function(page) {
+                              var viewport = page.getViewport({scale: 0.8});
+                              var canvas = document.createElement('canvas');
+                              var context = canvas.getContext('2d');
+                              canvas.height = viewport.height;
+                              canvas.width = viewport.width;
+
+                              pdfViewer.appendChild(canvas);
+
+                              var renderContext = {
+                                  canvasContext: context,
+                                  viewport: viewport
+                              };
+                              page.render(renderContext);
+                          });
+                      }
+                  }
+              }, function(reason) {
+                  console.error(reason);
+              
+          })
+      }
+  
+      return {
+      init: init
+      }
+  };
+  
+  function DisplayBytePDF() {
+    'use strict';
+    var url = null;
+    var pdf_bytes = null;
+
+    var init = function(args) {
+    url = args.url || null;
+    pdf_bytes = args.bytes || null;
+    display(pdf_bytes)
+    };
+    
+    var display = function(pdf_bytes) {
+        // Example byte array (in reality, this would be your PDF byte data)
+        var pdfBytes = new Uint8Array([
+            pdf_bytes
+        ]);
+
+        // Load the PDF.js library and render the PDF
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+
+        // Create a PDF document from the byte array
+        var loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+            loadingTask.promise.then(function(pdf) {
+                console.log('PDF loaded');
+                
+                var pdfViewer = document.getElementById(url);
+                if (!pdfViewer.hasChildNodes()){
+                    console.log("Viewer aqui: ", pdfViewer)
+                    
+                    for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        pdf.getPage(pageNum).then(function(page) {
+                            var viewport = page.getViewport({scale: 0.8});
+                            var canvas = document.createElement('canvas');
+                            var context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            pdfViewer.appendChild(canvas);
+
+                            var renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            page.render(renderContext);
+                        });
+                    }
+                }
+            }, function(reason) {
+                console.error(reason);
+            
+        })
+    }
+
+    return {
+    init: init
+    }
+};   
+
+    function IAPopUP() {
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+        modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+    }
+
+  function Typewrite() {
+      'use strict';
+      var el = null;
+      var di = null;
+      var ur = null;
+      var text = "";
+      var tempText = "";
+      var interval;
+      var range = [1];
+      
+      var init = function(args) {
+      di = args.di || null;
+      el = args.el || null;
+      text = di.innerHTML || "";
+      range.push(text.length)
+      interval = setInterval(animate, 1000)
+      };
+      
+      var setTempText = function() {
+      tempText = text.substring(0, range[0]);
+      if (tempText.length % 2 == 0)
+          tempText += "_";
+      el.setAttribute('data_content', tempText)
+      if ( range[0] < range[1]) {
+          range[0]++;
+          return true;      
+      }
+      return false;
+      };
+      
+      
+      var animate = function() {
+      // do things
+      setTempText();
+      clearInterval(interval)
+      if (text != tempText) {
+          var counter = Math.random * 35;
+          interval = setInterval(animate, counter)
+      } else {
+          el.setAttribute('data_content', text)
+          console.log('done', interval)
+      }
+      }
+      
+      return {
+      init: init
+      }
+  }  
+
+
+  $(document).ready(function() {
+    $('.slide-nav').on('click', function(e) {
+        e.preventDefault();
+        // get current slide
+        var current = $('.flex--active').data('slide'),
+        // get button data-slide
+        next = $(this).data('slide');
+    
+        $('.slide-nav').removeClass('active');
+        $(this).addClass('active');
+    
+        if (current === next) {
+            return false;
+        } else {
+            $('.slider__warpper').find('.flex__container[data-slide=' + next + ']').addClass('flex--preStart');
+            $('.flex--active').addClass('animate--end');
+            setTimeout(function() {
+                $('.flex--preStart').removeClass('animate--start flex--preStart').addClass('flex--active');
+                $('.animate--end').addClass('animate--start').removeClass('animate--end flex--active');
+            }, 800);
+        }
+    });
+});
+            </script>
+        </head>
+        <body>
+            <div class="slider__warpper">
+                
+                <div class="flex__container flex--zekrom flex--active" data-slide="1">
+                
+                <div class="flex__item flex__item--left">
+                    <div class="flex__content">
+                    <p class="text--sub"></p>
+                    <h1 class="text--big">Alan</h1>
+                    <p id="tempTextDiv1" style="display: none;" class="text--normal"> Apresento-me como Alan, candidato aprovado para a vaga de PESSOA DESENVOLVEDORA SALESFORCE SR na Bradesco. Com habilidades em integrações REST e SOAP, busco contribuir com minha experiência em desenvolvimento de soluções personalizadas.
+</p>
+                    <p id="typewrite1" data_content="" class="text--normal"></p>
+    
+                    <script>   
+
+                        var t = new Typewrite();
+                        t.init({
+                            di: document.getElementById("tempTextDiv1"),
+                            el: document.getElementById("typewrite1"),
+                            
+                        });
+
+                        var p = new DisplayPDF();
+                        p.init({
+                            url: "alan.lima123@hotmail.com.pdf"
+                        })
+
+                    </script>
+
+                    <table role="presentation" valign="top"
+                    border="0" cellspacing="0" cellpadding="0"
+                    width="100%"
+                    style="margin-top: 10px;position: fixed;">
+                        <tbody>
+                            <tr>
+                                <td valign="top"> 
+                                    <a
+                                        href="https://br.linkedin.com/jobs/view/pessoa-desenvolvedora-salesforce-sr-at-banco-bradesco-3952439349?position=4&pageNum=0&refId=rXTjpbV8yIWOmLwb%2FvSJrQ%3D%3D&trackingId=mvgqYrdTRE6OOthVPkHjQg%3D%3D&trk=public_jobs_jserp-result_search-card"
+                                        style="color:#0a66c2;display:inline-block;text-decoration:none;padding-right: 30px;"
+                                        target="_blank"
+                                        >
+                                        
+                                        <table role="presentation"
+                                            valign="top" border="0"
+                                            cellspacing="0"
+                                            cellpadding="0"
+                                            width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top"
+                                                    style="width:48px;padding-right:8px"
+                                                    width="48"> <a
+                                                        href="https://br.linkedin.com/jobs/view/pessoa-desenvolvedora-salesforce-sr-at-banco-bradesco-3952439349?position=4&pageNum=0&refId=rXTjpbV8yIWOmLwb%2FvSJrQ%3D%3D&trackingId=mvgqYrdTRE6OOthVPkHjQg%3D%3D&trk=public_jobs_jserp-result_search-card"
+                                                        style="color:#0a66c2;display:inline-block;text-decoration:none"
+                                                        target="_blank"
+                                                        >
+                                                        <img src="https://media.licdn.com/dms/image/C4E0BAQEXB9xussWsHQ/company-logo_200_200/0/1680038081184/bradesco_logo?e=2147483647&amp;v=beta&amp;t=2pGzja9-1E9bHXg7U-XF60sjJmWNggBBMPeFmsHOcNA"
+                                                            style="outline:none;text-decoration:none;display:inline-block;height:68px;width:68px;background-color:#eae6df;"
+                                                            width="789" height="789">
+                                                    </a> 
+                                                    </td>
+                                                    <td
+                                                        style="padding-bottom:0px">
+                                                        <a href="https://br.linkedin.com/jobs/view/pessoa-desenvolvedora-salesforce-sr-at-banco-bradesco-3952439349?position=4&pageNum=0&refId=rXTjpbV8yIWOmLwb%2FvSJrQ%3D%3D&trackingId=mvgqYrdTRE6OOthVPkHjQg%3D%3D&trk=public_jobs_jserp-result_search-card"
+                                                            style="color:#ffffff;display:inline-block;text-decoration:none;font-size:16px;font-weight:200;line-height:1.25"
+                                                            target="_blank"
+                                                            >
+                                                            PESSOA DESENVOLVEDORA SALESFORCE SR
+                                                        </a> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        style="padding-bottom:0px">
+                                                        <p
+                                                            style="margin:0;font-weight:400;margin-top:4px;text-overflow:ellipsis;font-size:12px;line-height:1.25;color:#ffffff;overflow:hidden;display:-webkit-box">
+                                                            Curitiba
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                                                                      
+                                                <tr>
+                                                    <td>
+                                                        <table
+                                                            role="presentation"
+                                                            valign="top"
+                                                            border="0"
+                                                            cellspacing="0"
+                                                            cellpadding="0"
+                                                            width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="font-size:0"
+                                                                        align="left">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </a> 
+                                </td>
+                            
+                                <!--LOGO DAS VAGAS SECTION-->
+                                
+        <td valign="top"
+            style="width:48px;padding-right:8px"
+            width="48"> 
+            <a
+                href="mailto:alan.lima123@hotmail.com?subject=Me%20Apresentando!&body=```
+Introdução-%20Apresento-me%20como%20Alan,%20candidato%20aprovado%20para%20a%20vaga%20de%20PESSOA%20DESENVOLVEDORA%20SALESFORCE%20SR%20na%20Bradesco.%20Com%20habilidades%20em%20integrações%20REST%20e%20SOAP,%20busco%20contribuir%20com%20minha%20experiência%20em%20desenvolvimento%20de%20soluções%20personalizadas.
+```%0D%0A%0D%0AAqui%20está%20meu%20Portfólio:%20%0D%0A%0D%0Ahttps://portfolio.infinivagas.com/8f72ffc1a0bfd79267bd5c699c32b9aff61172be7f54a321538e695aee52fc5b/freemium/bradesco_alan_lima123@hotmail_com%0D%0A%0D%0AQualquer%20dúvida%20estou%20à%20disposição!%0D%0A%0D%0AAlan"
+                style="color:#0a66c2;display:inline-block;text-decoration:none"
+                target=""
+                rel="noreferrer noopener"
+                >
+                <img src="https://static-00.iconduck.com/assets.00/email-icon-2048x2048-iejnvv9u.png"
+                    alt="person"
+                    style="outline:none;text-decoration:none;display:inline-block;height:48px;width:48px;border-radius:18px;"
+                    width="789" height="789">
+            </a> 
+        </td>
+        
+        <td valign="top"
+            style="width:48px;padding-right:8px"
+            width="48"> 
+            <a
+                href="https://www.linkedin.com/in/alanlima21"
+                style="color:#0a66c2;display:inline-block;text-decoration:none"
+                target="_blank"
+                rel="noreferrer noopener"
+                >
+                <img src="https://images.crunchbase.com/image/upload/c_pad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/rdp6fcqdcvqqcqn3jz72"
+                    alt="person"
+                    style="outline:none;text-decoration:none;display:inline-block;height:48px;width:48px;border-radius:18px;"
+                    width="789" height="789">
+            </a> 
+        </td>
+        
+
+                                <td valign="top"
+                                style="width:48px;"
+                                width="48"> 
+                                    <button id="myBtn" class="btn">IA</button>
+                                </td> 
+                                <td>
+                                    <table
+                                        role="presentation"
+                                        valign="top"
+                                        border="0"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size:0"
+                                                    align="left">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                    <p class="text__background repeat">Alan</p>
+                </div>
+                
+                <div class="flex__item flex__item--right">
+                    <div
+                        style="padding: 5px;cursor: pointer;"
+                        class=" btn_style ">
+                            <a href="alan.lima123@hotmail.com.pdf"
+                            style="font-size: 14px;margin:0;font-weight:400;font-family:-apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue','Fira Sans',Ubuntu,Oxygen,'Oxygen Sans',Cantarell,'Droid Sans','Apple Color Emoji','Segoe UI Emoji','Segoe UI Emoji','Segoe UI Symbol','Lucida Grande',Helvetica,Arial,sans-serif;line-height:1.25;color:#666666">
+                            Download CV
+                        </a>
+                    </div>                               
+                </div>
+
+                <div id="alan.lima123@hotmail.com.pdf" class="pokemon__img pdf-viewer"></div>
+                
+                <div id="myModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="form-control">
+                        <span class="username-label">Score de 1 a 5:</span>
+                        <p style="color: black;">1</p>
+                    </div>
+                      
+                    <div class="form-control">
+                        <span class="username-label">Avaliação da IA:</span>
+                        <p style="color: black;">Com base na descrição da vaga e no currículo do candidato, o resultado é:
+
+**Resultado:** O candidato não atende aos requisitos mínimos para o cargo de PESSOA DESENVOLVEDORA SALESFORCE SR.
+
+**Observações:**
+
+* A falta de conhecimento específico sobre Salesforce Financial Service Cloud e configuração de produtos financeiros pode comprometer a capacidade do candidato em realizar as tarefas esperadas.
+* O currículo do candidato não apresenta experiência em desenvolvimento de código personalizado com APEX e criação de páginas Visualforce, o que é um requisito fundamental para o cargo.
+* Embora seja mencionado o conhecimento em integrações REST, SOAP e outras com sistemas externos, a falta de especificações sobre as habilidades do candidato nesse sentido pode ser insuficiente para atender às necessidades do cargo.
+
+**Sugestão:** Aconselha-se que o candidato forneça mais informações sobre sua experiência e habilidades em Salesforce, desenvolvimento de código personalizado e integrações com sistemas externos para melhorar suas chances de concorrer ao cargo.</p>
+                    </div>
+                    <div class="form-control">
+                        <span class="username-label">Sobre a Vaga:</span>
+                        <div style="display: block;scroll-behavior: auto;">
+                            <p style="color: black;">
+                                &lt;strong&gt;req56731 - PESSOA DESENVOLVEDORA SALESFORCE SR&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt; Sobre o Bradesco &lt;br&gt;&lt;br&gt;&lt;/strong&gt;Trazendo um pouco mais da nossa história de contribuição e impacto na sociedade, com pioneirismo e inovação, o Bradesco surgiu com o propósito de democratizar o acesso aos serviços bancários no Brasil. Nesses 81 anos, sempre ao lado dos brasileiros, nos tornamos uma das maiores Organizações do país, formada por empresas e fundações que oferecem produtos e serviços que vão de soluções financeiras a seguros, saúde e educação.&lt;br&gt;&lt;br&gt;E estamos sempre em busca de pessoas dispostas a fazer a diferença na vida de milhões de brasileiros, contribuindo para o desenvolvimento da sociedade.&lt;br&gt;&lt;br&gt;&lt;strong&gt; Responsabilidades e atribuições &lt;br&gt;&lt;br&gt;&lt;/strong&gt;O Departamento de Sistemas é responsável pelo levantamento de requisitos, desenho funcional e desenvolvimento de aplicativos, codificação, testes, implementação, manutenção e evoluções para todos os processos do Banco e empresas do Grupo. Nesta posição o time será responsável pelo desenvolvimento de soluções de suporte para todo o novo Segmento Afluente.&lt;br&gt;&lt;br&gt;Modelo de trabalho : 2x na semana no escritório e 3x home&lt;br&gt;&lt;br&gt;Local: Rio de Janeiro, Curitiba, Recife, São Paulo (Alphaville ou Osasco) e Uberlândia&lt;br&gt;&lt;br&gt;&lt;strong&gt; Requisitos e Qualificações &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt; Desenvolver e manter funcionalidades no Salesforce Field Services e Salesforce Service Cloud;&lt;/li&gt;&lt;li&gt;Integrar-se com equipes de desenvolvimento, como Sistemas, Infraestrutura, Telecom, Segurança e Negócios, para garantir entregas sinérgicas;&lt;/li&gt;&lt;li&gt; Garantir a satisfação dos clientes internos e externos, entregando projetos e manutenções dentro do escopo, qualidade e prazo acordado;&lt;/li&gt;&lt;li&gt; Resolver incidentes e problemas de sistemas, identificando soluções eficientes e propondo melhorias;&lt;/li&gt;&lt;li&gt; Documentar tecnicamente os sistemas sob sua responsabilidade e revisar continuamente os processos de atendimento;&lt;/li&gt;&lt;li&gt; Além disso, conhecimento em Salesforce Flow, LWC/Aura, APEX e administração de ORGs Salesforce é essencial para esse papel".&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;Para essa oportunidade você precisa:&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt; Conhecimento em Salesforce Financial Services Cloud: Como a plataforma principal para o desenvolvimento;&lt;/li&gt;&lt;li&gt; Conhecimento em Apex: Linguagem de programação proprietária da Salesforce para desenvolvimento personalizado;&lt;/li&gt;&lt;li&gt; Conhecimento Visualforce: Framework para construção de interfaces de usuário;&lt;/li&gt;&lt;li&gt; Conhecimento em Lightning Component Framework: Para construção de aplicativos empresariais na Salesforce;&lt;/li&gt;&lt;li&gt; Conhecimento: SOQL/SOSL: Para consulta de dados na Salesforce;&lt;/li&gt;&lt;li&gt; Certificações: Certified Platform Developer I: Certificação que valida a capacidade de desenvolver aplicações personalizadas na plataforma Salesforce;&lt;/li&gt;&lt;li&gt; Certified Platform Developer II: Certificação que valida a capacidade de desenvolver aplicações avançadas e interfaces de usuário na plataforma Salesforce;&lt;/li&gt;&lt;li&gt; Desejável: Salesforce DX: Para desenvolvimento e implantação contínua;&lt;/li&gt;&lt;li&gt; Einstein Analytics: Para análise de dados;&lt;/li&gt;&lt;li&gt; Certified Financial Services Cloud Consultant: Certificação que valida a capacidade de implementar a Financial Services Cloud;&lt;/li&gt;&lt;li&gt; Trailhead Double Star Ranger: Status que demonstra um alto nível de engajamento e experiência com a plataforma Salesforce;&lt;/li&gt;&lt;li&gt; Certificações Microsoft Azure de nível Intermediário ou Expert, especialmente AZ-900, DP-900, SC-900, e AI-900, são fortemente desejáveis;&lt;/li&gt;&lt;li&gt; Salesforce Platform: Domínio do Salesforce, incluindo configuração, personalização e administração de objetos, campos, perfis, permissões, fluxos de trabalho e automações;&lt;/li&gt;&lt;li&gt; Salesforce Financial Service Cloud: Conhecimento específico desta solução, incluindo configuração de produtos financeiros, processos de atendimento ao cliente e integrações com sistemas externos;&lt;/li&gt;&lt;li&gt; APEX e Visualforce: Habilidade para desenvolver código personalizado usando APEX e criar páginas Visualforce. Lightning Web Components (LWC) e Aura Components: Experiência com o desenvolvimento de componentes front-end no Salesforce Lightning;&lt;/li&gt;&lt;li&gt; Integrações: Conhecimento em integrações REST, SOAP e outras com sistemas externos, como bancos de dados, APIs e serviços;&lt;/li&gt;&lt;li&gt; Habilidades em análise de requisitos, resolução de problemas, troubleshooting e colaboração com equipes multidisciplinares são essenciais para o sucesso nesse papel;&lt;/li&gt;&lt;li&gt; Inglês avançado (Obrigatório).&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt; O que nós oferecemos &lt;br&gt;&lt;br&gt;&lt;/strong&gt;No Bradesco valorizamos a saúde e bem-estar, oferecendo um extenso portfólio de benefícios as todas nossas pessoas colaboradoras.&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt; PLR ou Bônus: Conforme a elegibilidade de cargo*&lt;/li&gt;&lt;li&gt; Convênio Médico&lt;/li&gt;&lt;li&gt; Convênio Odontológico&lt;/li&gt;&lt;li&gt; Seguro de Vida&lt;/li&gt;&lt;li&gt; Vale Alimentação&lt;/li&gt;&lt;li&gt; Vale Refeição&lt;/li&gt;&lt;li&gt; Total Pass&lt;/li&gt;&lt;li&gt; 13º Cesta Alimentação&lt;/li&gt;&lt;li&gt; Vale Transporte (adesão opcional)&lt;/li&gt;&lt;li&gt; Descontos em produtos e serviços em empresas parceiras&lt;/li&gt;&lt;li&gt; Previdência Privada (adesão opcional, com participação financeira da Organização Bradesco)&lt;/li&gt;&lt;li&gt; Viva Bem Bradesco: programa de saúde, bem-estar e qualidade de vida&lt;/li&gt;&lt;li&gt; Unibrad: Universidade Corporativa Bradesco&lt;/li&gt;&lt;li&gt; Isenção de Tarifas: condições especiais em diversos produtos e serviços&lt;/li&gt;&lt;li&gt; Auxílio Creche ou Babá&lt;/li&gt;&lt;li&gt; Licença Paternidade estendida de 20 dias&lt;/li&gt;&lt;li&gt; Licença Maternidade de 180 dias, acompanhamento assistencial da gestação até o pós-parto&lt;/li&gt;&lt;li&gt; Auxílio para filho atípico*&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt; Saiba mais sobre o Bradesco &lt;br&gt;&lt;br&gt;&lt;/strong&gt;Para mais informações sobre as nossas práticas de gestão de pessoas e indicadores, acesse bradescori.com.br/o-bradesco/capital-humano/ .&lt;br&gt;&lt;br&gt;Para mais informações institucionais, de negócios e financeiras, além das práticas e iniciativas de sustentabilidade, acesse bradescori.com.br/o-bradesco/relatorio-integrado/ .
+                            
+                            </p>
+                        </div
+                    </div>
+                    <a href="https://infinivagas.com" style="font-size: 10px;">Powered by INFINIVAGAS</a>
+                    </div>
+                </div>
+                <script>IAPopUP()</script>
+
+            </div>
+        
+        
+            </div>
+
+            <div class="slider__navi">
+                
+            </div>    
+
+        </body>
+    </html>
+    
